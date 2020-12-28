@@ -151,7 +151,7 @@ class game():
                 self.handle_events_run(event)
 
     def run01(self):
-        self.screen.fill(darkgreen)
+        self.screen.fill(screen_color)
         for obj in self.streets:
             if not obj.update01():
                 self.streets.remove(obj)
@@ -166,21 +166,33 @@ class game():
         self.clock.tick(60)
             
     def run2(self):
-        self.screen.fill(screen_color)
+        """
+        structure:
+        1) update all objects, cars make their decision where to go next
+        2) animate the movement of the cars
+        3) when cars have reached their target, detect crashes and collect
+           cars that are still there
+        """ 
+
         for obj in self.cars + self.streets + self.crossings:
             obj.update()
+
+        for i in range(steps_between_decisions):
+            self.screen.fill(screen_color)
+            for obj in self.streets + self.crossings + self.crashes:
+                obj.draw(self.screen)
+            for c in self.cars:
+                c.update(decide=False)
+                c.draw(self.screen)
+            self.clock.tick(int(steps_between_decisions/time_between_decisions))
+
+            pygame.display.flip()
+         
         self.crashes = []
         self.cars = []
         for obj in self.streets + self.crossings:
             self.crashes = self.crashes + obj.crash
             self.cars += obj.get_cars()
-        for obj in self.streets + self.crossings:
-            obj.draw(self.screen)
-        for obj in self.crashes + self.cars:
-            obj.draw(self.screen)
-        pygame.display.flip()
-        self.clock.tick(1)
-         
               
 
     def run(self):

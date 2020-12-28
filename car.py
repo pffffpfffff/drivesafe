@@ -14,6 +14,9 @@ class Car:
             self.choose_dest()
             self.cars = [] # directions from which other cars are coming
             self.coord = self.container.get_coordinates()
+            self.floatcoord = np.array(self.coord)
+            self.target_coord = np.array(self.coord)
+            self.delta = np.array([0,0])
             self.color = color
             self.radius = car_size
             self.type = "car"
@@ -35,12 +38,12 @@ class Car:
         ch = self.dest_choices()
         chlist = [x for x in ch]
        #print('chlist', chlist)
-        x = int(np.round(-0.49+ (len(chlist)*0.98)* np.random.random()))
+        x = np.random.randint(len(chlist))
        #print('x', x)
         self.destination = self.location.connections[chlist[x]]
 
     def chosen_action(self):
-        return int(np.round(-0.5 + 4*np.random.random()))
+        return np.random.randint(4)
 
     def info(self):
         ownprior = 0
@@ -72,18 +75,23 @@ class Car:
             self.container.emit(self)
             self.destination.accept(self, lane)
         
-    def update(self, act=None):
-        if act==None:
-            act = self.chosen_action()
-        a = self.int2choices(act)
-        if a[0]:
-            self.enter(a[1])
+    def update(self, act=None, decide=True):
+        if decide:
+            if act==None:
+                act = self.chosen_action()
+            a = self.int2choices(act)
+            if a[0]:
+                self.enter(a[1])
+            else:
+                self.source = self.location
+            self.choose_dest()
+           #rv = [np.random.randint(100) for x in range(2)]
+           #rv = (rv/np.linalg.norm(rv)*self.radius/2).astype(int)
+            self.target_coord = np.array(self.container.get_coordinates(),dtype=int)# + rv
+            self.delta = (self.target_coord - self.floatcoord)/steps_between_decisions
         else:
-            self.source = self.location
-        self.choose_dest()
-        rv = [np.random.randint(100) for x in range(2)]
-        rv = (rv/np.linalg.norm(rv)*self.radius/2).astype(int)
-        self.coord = tuple(np.array(self.container.get_coordinates(),dtype=int) + rv)
+            self.floatcoord = self.floatcoord + self.delta
+            self.coord = tuple(self.floatcoord.astype(int))
         
     def draw(self, surface):
         pygame.draw.circle(surface, self.color, self.coord, self.radius)

@@ -24,6 +24,7 @@ class Lane:
 
     def draw(self, surface):
         pygame.draw.polygon(surface, self.color, self.pnts)
+       #pygame.draw.circle(surface, (255,0,0), self.coord, 5)
 
     def change(self, coord):
         self.pnts = coord[0:4]
