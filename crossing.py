@@ -1,6 +1,7 @@
 import pygame
 import numpy as np
 from crash import *
+from car import *
 
 class Crossing:
     def __init__(self, coord = (0,0), radius=crossing_size, color=crossing_color):
@@ -12,6 +13,7 @@ class Crossing:
         self.color=color
         self.type = "crossing"
         self.crash = []
+        self.spawn = spawn_cars
 
     def emit(self, car):
         if car in self.cars:
@@ -89,6 +91,12 @@ class Crossing:
     #   print('crossing update: {} car(s)'.format(len(self.cars)), self)
         if len(self.cars) > 1:
             self.crash.append(Crash(self.cars))
+        if self.spawn:
+            nearcars = len(self.cars)
+            for con in self.connections:
+                nearcars += len(self.connections[con].get_cars())
+            if nearcars == 0 and np.random.random() < 0.3:
+                Car(self, tuple([np.random.randint(256) for i in range(3)]))
 
     def change(self, coord):
         self.x, self.y = coord

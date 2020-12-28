@@ -23,6 +23,7 @@ class game():
         self.selectedobj = 0
         self.selcrossings = {}
         self.crashes = []
+        self.shot = 0
         """
         0: create crossings
         1: create streets
@@ -163,7 +164,9 @@ class game():
         for obj in self.streets + self.crossings +self.cars:
             obj.draw(self.screen)
         pygame.display.flip()
-        self.clock.tick(60)
+        self.clock.tick(int(steps_between_decisions/time_between_decisions))
+        pygame.image.save(self.screen, "{}.png".format(self.shot))
+        self.shot += 1
             
     def run2(self):
         """
@@ -185,6 +188,8 @@ class game():
                 c.update(decide=False)
                 c.draw(self.screen)
             self.clock.tick(int(steps_between_decisions/time_between_decisions))
+            pygame.image.save(self.screen, "{}.png".format(self.shot))
+            self.shot += 1
 
             pygame.display.flip()
          
