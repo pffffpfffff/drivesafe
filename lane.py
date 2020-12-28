@@ -1,38 +1,40 @@
-class lane:
-	def __init__(self,before,nexts):
-        self.cars = {}
-        self.before = before
-        self.nexts = nexts
+import pygame
+from crash import *
+from settings import *
+class Lane:
+    def __init__(self, forward, coord):
+        self.cars = []
+        self.forward = forward 
+        self.pnts = coord[0:4]
+        self.coord = coord[4]
+        self.color = lane_color
+        # forward=True means that the preferred direction is from connection[1]
+        # -> connection[2] of the parent street, otherwise it is reversed
+        self.type = "lane"
 
-	def accept(self,car):
-        if car.next == self:
+    def add_car(self,car):
+        if car not in self.cars:
             self.cars.append(car)
-        else:
-            pass
+            car.container = self
+        return len(self.cars)
 
-	def emit(self,car):
-        if car in self.cars and car.next is not wait:
+    def emit(self,car):
+        if car in self.cars:
             self.cars.remove(car)
-        else:
-            pass
 
-	def direction(self,car)
-        if car in self.cars and car.next == self.nexts:
-            return True
-        else:
-            return False
+    def draw(self, surface):
+        pygame.draw.polygon(surface, self.color, self.pnts)
 
-	def is_left(self,street)
-		if self.nexts == street.end2 and self.before = street.end1:
-			return False
-		else:
-			return True
+    def change(self, coord):
+        self.pnts = coord[0:4]
+        self.coord = coord[4]
+    
+    def detect_crash(self):
+        if len(self.cars) > 1:
+            return Crash(self.cars)
 
-	def police(self)
-		if len(self.cars) > 1:
-			print('CRASH!')
-			return -1
-		else:
-			pass
-	
+    def get_coordinates(self):
+        return self.coord
+
+    
 
