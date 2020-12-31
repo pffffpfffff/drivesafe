@@ -76,14 +76,17 @@ class Car:
             self.destination.accept(self, lane)
         
     def update(self, act=None, decide=True):
+        self.feedback = 0
         if decide:
             if act==None:
                 act = self.chosen_action()
             a = self.int2choices(act)
             if a[0]:
                 self.enter(a[1])
+                self.feedback = reward_amount
             else:
                 self.source = self.location
+                self.feedback = 0
             self.choose_dest()
            #rv = [np.random.randint(100) for x in range(2)]
            #rv = (rv/np.linalg.norm(rv)*self.radius/2).astype(int)

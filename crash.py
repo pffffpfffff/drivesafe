@@ -19,8 +19,11 @@ class Crash:
                 innocent = i
                 lowpr = self.cars[i].priority
         for c in self.cars:
-            c.feedback = -100
-        self.cars[innocent].feedback = 1
+            c.feedback = punishment_amount
+        if self.cars[innocent].location == self.cars[innocent].source:
+            self.cars[innocent].feedback = 0
+        else:
+            self.cars[innocent].feedback = reward_amount
 
     def clean_up(self):
        #for c in self.cars:

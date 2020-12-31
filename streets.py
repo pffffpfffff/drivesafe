@@ -128,7 +128,8 @@ class Street:
         # for now only use one lane in either direction
         car.source = car.location
         car.location = self
-        feedback = 1
+       #car.feedback = 1
+        # do feedback in car class when entering
         if car.source == self.connections[1]:
             if sideofroad:
                 chlane = self.fwlanes[0]

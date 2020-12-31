@@ -11,6 +11,7 @@ from settings import *
 
 
 
+
 class game():
     def __init__(self):
         pygame.init()
@@ -165,8 +166,8 @@ class game():
             obj.draw(self.screen)
         pygame.display.flip()
         self.clock.tick(int(steps_between_decisions/time_between_decisions))
-        pygame.image.save(self.screen, "{}.png".format(self.shot))
-        self.shot += 1
+#       pygame.image.save(self.screen, "{}.png".format(self.shot))
+#       self.shot += 1
             
     def run2(self):
         """
@@ -177,9 +178,11 @@ class game():
            cars that are still there
         """ 
 
-        for obj in self.cars + self.streets + self.crossings:
-            obj.update()
+        # make decisions for cars
+        for car in self.cars:
+            car.update()
 
+        # animation
         for i in range(steps_between_decisions):
             self.screen.fill(screen_color)
             for obj in self.streets + self.crossings + self.crashes:
@@ -188,10 +191,17 @@ class game():
                 c.update(decide=False)
                 c.draw(self.screen)
             self.clock.tick(int(steps_between_decisions/time_between_decisions))
-            pygame.image.save(self.screen, "{}.png".format(self.shot))
-            self.shot += 1
+#           pygame.image.save(self.screen, "{}.png".format(self.shot))
+#           self.shot += 1
 
             pygame.display.flip()
+
+        for obj in self.streets + self.crossings:
+            obj.update()
+        
+       #for car in self.cars:
+            # pass feedback to learner
+            
          
         self.crashes = []
         self.cars = []
