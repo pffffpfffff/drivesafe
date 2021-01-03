@@ -23,6 +23,9 @@ class Car:
             self.priority = 100
             self.feedback = 0
             self.container.cars.append(self)
+            self.state = 0
+            self.prev_state = 0
+            self.prev_action = 0
 
         
     def dest_choices(self):
