@@ -18,11 +18,12 @@ line_color = (210, 210, 210)
 lane_color = (80, 80, 80)
 crossing_color = (80, 80, 80)
 
-steps_between_decisions = 60
-time_between_decisions =1 
+steps_between_decisions = 30
+time_between_decisions =1
 
 spawn_cars = True
 reward_amount = 1
 punishment_amount = -10
 
-
+animate = True
+loadcity = True
