@@ -27,3 +27,4 @@ punishment_amount = -10
 
 animate = True
 loadcity = True
+loadlearner = True
