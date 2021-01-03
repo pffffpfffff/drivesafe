@@ -7,7 +7,7 @@ class QLearner:
         self.lr = learning_rate
         self.discount = discount # forgetting rate
         self.greedy = greedy
-        self.q_table = build_qtable(acts)
+        self.q_table = self.build_qtable(acts)
     
     def build_qtable(self,actions):
         table = pd.DataFrame(columns = actions, dtype = np.float64)
@@ -25,16 +25,17 @@ class QLearner:
     def add_new_state(self,state):
         if state not in self.q_table.index:
             self.q_table = self.q_table.append(
-                    pd.Series([0]*len(sel.acts),index = self.q_table.columns,name=state))
+                    pd.Series([0]*len(self.acts),index = self.q_table.columns,name=state))
 
     def learn(self,s,a,r,s_):
         """
-        s: current state
-        a: imagined action
+        s: state
+        a: action leading to s_
         r: reward
         s_: the next state after picking the action "a"
         """
 
+        self.add_new_state(s)
         self.add_new_state(s_)
         q_predict = self.q_table.loc[s,a]
 #        if s_ != 'terminal':

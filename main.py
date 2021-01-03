@@ -7,7 +7,7 @@ from car import *
 from crash import *
 from settings import *
 from city import *
-#from RL import *
+from RL import *
 
 class game():
     def __init__(self):
@@ -22,7 +22,7 @@ class game():
         self.cars = []
         self.crashes = []
         self.shot = 0
-#       self.learner = QLearner()
+        self.learner = QLearner()
         """
         0: create crossings
         1: create streets
@@ -127,8 +127,9 @@ class game():
 
         # make decisions for cars
         for car in self.cars:
-#           car.update(act=self.learner.choose_action(car.info())
-            car.update()
+            car.action = self.learner.choose_action(car.state)
+            car.update(act=car.action)
+#           car.update()
 
         if animate:
             # animation
@@ -148,13 +149,25 @@ class game():
 
         self.cars, self.crashes = self.city.update()
         
-       #for car in self.cars:
-            # pass feedback to learner
-           #self.learner.learn(car.info(), car.last_action ,r,s_ 
-            
-         
-              
+        # DEBUG
+        try:
+            print('INFO: ', self.cars[0].state, self.cars[0].action, 'feedback: ', self.cars[0].feedback, self.cars[0].new_state)
+            print(self.learner.q_table)
+            self.cars[0].highlight = True
+            self.cars[0].draw(self.screen)
+            pygame.display.flip()
+            self.clock.tick(1) 
+            self.cars[0].highlight = False
+        except:
+            print('No cars')
 
+        for car in self.cars:
+            # pass feedback to learner
+            car.new_state = car.info()
+            self.learner.learn(car.state, car.action ,car.feedback,car.new_state) 
+            car.state = car.new_state
+        
+              
     def run(self):
         while True:
             self.handle_events()

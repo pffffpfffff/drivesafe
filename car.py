@@ -24,8 +24,9 @@ class Car:
             self.feedback = 0
             self.container.cars.append(self)
             self.state = 0
-            self.prev_state = 0
-            self.prev_action = 0
+            self.new_state = 0
+            self.action = 0
+            self.highlight = False
 
         
     def dest_choices(self):
@@ -79,8 +80,8 @@ class Car:
             self.destination.accept(self, lane)
         
     def update(self, act=None, decide=True):
-        self.feedback = 0
         if decide:
+            self.feedback = 0
             if act==None:
                 act = self.chosen_action()
             a = self.int2choices(act)
@@ -89,7 +90,6 @@ class Car:
                 self.feedback = reward_amount
             else:
                 self.source = self.location
-                self.feedback = 0
             self.choose_dest()
            #rv = [np.random.randint(100) for x in range(2)]
            #rv = (rv/np.linalg.norm(rv)*self.radius/2).astype(int)
@@ -100,6 +100,8 @@ class Car:
             self.coord = tuple(self.floatcoord.astype(int))
         
     def draw(self, surface):
+        if self.highlight:
+            pygame.draw.circle(surface, (255,0,0), self.coord, int(self.radius*1.1))
         pygame.draw.circle(surface, self.color, self.coord, self.radius)
          
         
