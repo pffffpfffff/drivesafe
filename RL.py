@@ -1,19 +1,19 @@
 import numpy as np
 import pandas as pd
 
-class QLearning:
-    def __init__(self,acts,learning_rate,discount,greedy = 0.9):
+class QLearner:
+    def __init__(self,acts=[0,1,2,3],learning_rate=0.1,discount=0.9,greedy = 0.9):
         self.acts = acts # list possible actions
         self.lr = learning_rate
         self.discount = discount # forgetting rate
         self.greedy = greedy
         self.q_table = build_qtable(acts)
     
-    def bulid_qtable(self,actions):
+    def build_qtable(self,actions):
         table = pd.DataFrame(columns = actions, dtype = np.float64)
         return table
 
-    def choose_actions(self,state):
+    def choose_action(self,state):
         if np.random.uniform() < self.greedy:
         #acts greedy
            weighted_actions = self.q_table.loc[state,:]
@@ -22,10 +22,23 @@ class QLearning:
             action = np.random.choice(self.acts)
         return action
 
+    def add_new_state(self,state):
+        if state not in self.q_table.index:
+            self.q_table = self.q_table.append(
+                    pd.Series([0]*len(sel.acts),index = self.q_table.columns,name=state))
+
     def learn(self,s,a,r,s_):
+        """
+        s: current state
+        a: imagined action
+        r: reward
+        s_: the next state after picking the action "a"
+        """
+
+        self.add_new_state(s_)
         q_predict = self.q_table.loc[s,a]
 #        if s_ != 'terminal':
-        q_target = r + self.gamma * self.q_table.loc[s_,:].max()
+        q_target = r + self.discount * self.q_table.loc[s_,:].max()
 #        else:
 #            q_target = r
         self.q_table.loc[s,a] += self.lr*(q_target - q_predict)
