@@ -23,7 +23,9 @@ time_between_decisions =1
 
 spawn_cars = True
 reward_amount = 1
-punishment_amount = -10
+punishment_amount = -100
 
 animate = True
 loadcity = True
+
+qgreed = 0.6

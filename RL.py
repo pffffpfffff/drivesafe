@@ -1,8 +1,9 @@
 import numpy as np
 import pandas as pd
+from settings import *
 
 class QLearner:
-    def __init__(self,acts=[0,1,2,3],learning_rate=0.1,discount=0.9,greedy = 0.9):
+    def __init__(self,acts=[0,1,2,3],learning_rate=0.1,discount=0.9,greedy = qgreed):
         self.acts = acts # list possible actions
         self.lr = learning_rate
         self.discount = discount # forgetting rate

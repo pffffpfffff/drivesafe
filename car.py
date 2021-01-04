@@ -61,7 +61,7 @@ class Car:
                         ownprior = x
                     else:
                         self.cars.append(x)
-        info = sum([3**x for x in self.cars]) + 2*3**ownprior
+        info = sum([10**x for x in self.cars]) + 2*10**ownprior
         self.priority = ownprior
         return info
     
