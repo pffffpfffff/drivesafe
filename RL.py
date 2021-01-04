@@ -1,4 +1,5 @@
 import numpy as np
+import pickle
 import pandas as pd
 from settings import *
 
@@ -12,9 +13,11 @@ class QLearner:
     
     def build_qtable(self,actions):
         table = pd.DataFrame(columns = actions, dtype = np.float64)
+        #table.append(pd.Series([0]*len(self.acts),index = actions,name=0))
         return table
 
     def choose_action(self,state):
+        self.add_new_state(state)
         if np.random.uniform() < self.greedy:
         #acts greedy
            weighted_actions = self.q_table.loc[state,:]
@@ -44,3 +47,16 @@ class QLearner:
 #        else:
 #            q_target = r
         self.q_table.loc[s,a] += self.lr*(q_target - q_predict)
+
+    def save(self,name = "qlearner.pkl"):
+        with open(name, "wb") as qt:
+            pickle.dump(self, qt)
+
+    def load(self,name = "qlearner.pkl"):
+        ql = self
+        try:
+            with open(name, "rb") as qt:
+                ql = pickle.load(qt)
+        except:
+            pass
+        return ql
