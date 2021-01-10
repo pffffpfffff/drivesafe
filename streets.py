@@ -15,7 +15,7 @@ class Street:
       #     {1:{i: Lane(True, self.lane_coord(i,1)) for i in range(lanesfw)},  \
       #      -1:{i: Lane(False, self.lane_coord(i,-1)) for i in range(lanesbw)}}
         self.fwlanes = [Lane(True, self.lane_coord(i,1)) for i in range(lanesfw)]
-        self.bwlanes = [Lane(True, self.lane_coord(i,-1)) for i in range(lanesbw)]
+        self.bwlanes = [Lane(False, self.lane_coord(i,-1)) for i in range(lanesbw)]
         self.type = "street"
         self.crash = []
 

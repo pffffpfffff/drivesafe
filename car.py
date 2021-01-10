@@ -61,8 +61,24 @@ class Car:
                         ownprior = x
                     else:
                         self.cars.append(x)
-        info = sum([10**x for x in self.cars]) + 2*10**ownprior
+        self.cars = list(set(self.cars))
+        # car is on the right lane, if self.container.forward and
+        # self.destination == self.location.connections[1] or if
+        # not(self.container.forward) and self.destination ==
+        # self.location.connections[0]
+        # All this only applies on streets
         self.priority = ownprior
+        if self.location.type == "street":
+            fwfw = self.container.forward and (self.destination == self.location.connections[1])
+            bwbw = not(self.container.forward) and (self.destination == self.location.connections[0])
+            if fwfw or bwbw:
+                self.priority = ownprior
+                info = sum([10**x for x in self.cars]) + 2*10**ownprior
+            else:
+                self.priority = ownprior + 0.5
+                info = sum([10**x for x in self.cars]) + 4*10**ownprior
+        else:
+            info = sum([10**x for x in self.cars]) + 2*10**ownprior
         return info
     
     def int2choices(self, i, leng=2):
