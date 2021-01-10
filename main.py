@@ -25,6 +25,7 @@ class game():
         self.learner = QLearner()
         if loadlearner:
             self.learner = self.learner.load()
+            self.learner.set_greedy(1)
         """
         0: create crossings
         1: create streets

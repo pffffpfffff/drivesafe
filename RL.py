@@ -10,6 +10,9 @@ class QLearner:
         self.discount = discount # forgetting rate
         self.greedy = greedy
         self.q_table = self.build_qtable(acts)
+
+    def set_greedy(self,greedy):
+        self.greedy = greedy
     
     def build_qtable(self,actions):
         table = pd.DataFrame(columns = actions, dtype = np.float64)

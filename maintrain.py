@@ -23,6 +23,10 @@ class game():
         self.crashes = []
         self.shot = 0
         self.learner = QLearner()
+        if loadlearner:
+            print("loaded")
+            self.learner = self.learner.load()
+            self.learner.set_greedy(qgreed)
         self.crashcounter = 0
         """
         0: create crossings
@@ -58,9 +62,10 @@ class game():
         
               
     def run(self):
-        for i in range(1000):
+        for i in range(100):
             self.run2()
-
+        self.learner.save()
+        print(self.learner.q_table.to_string())
 
 
 game().run()
