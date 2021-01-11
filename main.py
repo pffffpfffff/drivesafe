@@ -25,7 +25,11 @@ class game():
         self.learner = QLearner()
         if loadlearner:
             self.learner = self.learner.load()
-            self.learner.set_greedy(1)
+            if train:
+                self.learner.set_greedy(qgreed)
+            else:
+                print('no training')
+                self.learner.set_greedy(1)
         """
         0: create crossings
         1: create streets
@@ -56,6 +60,8 @@ class game():
             elif event.key == 99: #press 'c'
                 color = tuple([np.random.randint(255) for x in range(3)])
                 Car(self.city.selectedobj, color=color) 
+            elif event.key == 115: # press 's'
+                self.city.save()
                 
 
     def handle_events_streets(self, event):
@@ -117,8 +123,9 @@ class game():
             obj.draw(self.screen)
         pygame.display.flip()
         self.clock.tick(int(steps_between_decisions/time_between_decisions))
-#       pygame.image.save(self.screen, "{}.png".format(self.shot))
-#       self.shot += 1
+        if video:
+            pygame.image.save(self.screen, "{}.png".format(self.shot))
+            self.shot += 1
             
     def run2(self):
         """
@@ -146,14 +153,15 @@ class game():
                     c.update(decide=False)
                     c.draw(self.screen)
                 self.clock.tick(int(steps_between_decisions/time_between_decisions))
-    #           pygame.image.save(self.screen, "{}.png".format(self.shot))
-    #           self.shot += 1
+                if video:
+                    pygame.image.save(self.screen, "{}.png".format(self.shot))
+                    self.shot += 1
 
                 pygame.display.flip()
 
         cars_, self.crashes = self.city.update()
         
-        # DEBUG
+#       # DEBUG
 #       try:
 #           print('INFO: ', self.cars[0].state, self.cars[0].action, 'feedback: ', self.cars[0].feedback, self.cars[0].new_state)
 #           print(self.learner.q_table)
@@ -161,17 +169,24 @@ class game():
 #           self.cars[0].draw(self.screen)
 #           pygame.display.flip()
 #           self.clock.tick(1) 
+#           if self.cars[0].state == 747:
+#               print('cars', self.cars[0].cars)
+#               print('priority', self.cars[0].priority)
+#               input('press any key')
 #           self.cars[0].highlight = False
 #       except:
 #           print('No cars')
 
-        for car in self.cars:
-            # pass feedback to learner
-            car.new_state = car.info()
-            self.learner.learn(car.state, car.action ,car.feedback,car.new_state) 
-            car.state = car.new_state
+        if train:
+            for car in self.cars:
+                # pass feedback to learner
+                car.new_state = car.info()
+                self.learner.learn(car.state, car.action ,car.feedback,car.new_state) 
+                car.state = car.new_state
 
         self.cars = cars_
+        for car in self.cars:
+            car.state = car.info()
         
               
     def run(self):

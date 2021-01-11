@@ -51,7 +51,7 @@ class game():
 #           car.update()
 
 
-        self.cars, self.crashes = self.city.update()
+        cars_, self.crashes = self.city.update()
         self.crashcounter += len(self.crashes)
         
         for car in self.cars:
@@ -60,12 +60,16 @@ class game():
             self.learner.learn(car.state, car.action ,car.feedback,car.new_state) 
             car.state = car.new_state
         
+        self.cars = cars_
+        for car in self.cars:
+            car.state = car.info()
               
     def run(self):
-        for i in range(100):
+        for i in range(10000):
             self.run2()
         self.learner.save()
         print(self.learner.q_table.to_string())
+        print(self.learner.q_table.shape)
 
 
 game().run()

@@ -95,7 +95,7 @@ class Crossing:
             nearcars = len(self.cars)
             for con in self.connections:
                 nearcars += len(self.connections[con].get_cars())
-            if nearcars == 0 and np.random.random() < 0.3:
+            if nearcars == 0 and np.random.random() < spawn_probability:
                 Car(self, tuple([np.random.randint(256) for i in range(3)]))
 
     def change(self, coord):

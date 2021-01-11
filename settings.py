@@ -19,14 +19,19 @@ lane_color = (80, 80, 80)
 crossing_color = (80, 80, 80)
 
 steps_between_decisions = 30
-time_between_decisions =1
+time_between_decisions =0.6
 
 spawn_cars = True
+spawn_probability = 0.3
+car_bound = 0.5 # max number of cars = car_bound*(numbofcrossings + numofstreets)
 reward_amount = 1
 punishment_amount = -100
+train = False
 
 animate = True
 loadcity = True
 
 loadlearner = True
-qgreed = 0.6
+qgreed = 0.8
+
+video = False

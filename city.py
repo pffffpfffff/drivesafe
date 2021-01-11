@@ -10,6 +10,7 @@ class City:
         self.streets = []
         self.selectedobj = 0
         self.selcrossings = {}
+        self.spawn = spawn_cars
 
     def get_cars(self):
         cars = []
@@ -73,6 +74,14 @@ class City:
             obj.draw(screen)
 
     def update(self):
+        if self.spawn:
+            if len(self.get_cars())>car_bound*len(self.crossings+self.streets):
+                for cr in self.crossings:
+                    cr.spawn = False
+            else:
+                for cr in self.crossings:
+                    cr.spawn = True
+                
         for obj in self.streets + self.crossings:
             obj.update()
         crashes = []
@@ -89,12 +98,18 @@ class City:
                 city = pickle.load(cityfile)
         except:
             print('no saved streets and crossings')
+        for cr in city.crossings:
+            cr.spawn = spawn_cars
+        city.delete_cars()
         return city
             
 
     def delete_cars(self):
-        for obj in self.streets + self.crossings:
-            obj.cars = []
+        for cr in self.crossings:
+            cr.cars = []
+        for s in self.streets:
+            for l in s.fwlanes + s.bwlanes:
+                l.cars = []
     
     def save(self, filename='city.pckl'):
         self.delete_cars()

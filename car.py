@@ -9,7 +9,7 @@ class Car:
         if location.type=="crossing":
             self.location = location
             self.container = location
-            self.source = None
+            self.source = location
             self.destination = None
             self.choose_dest()
             self.cars = [] # directions from which other cars are coming
@@ -22,17 +22,17 @@ class Car:
             self.type = "car"
             self.priority = 100
             self.feedback = 0
-            self.container.cars.append(self)
             self.state = 0
             self.new_state = 0
             self.action = 0
+            self.container.cars.append(self)
             self.highlight = False
 
         
     def dest_choices(self):
         all_choices = self.location.connections
         ac = dict(all_choices)
-        if self.source != None and len(all_choices)>1:
+        if (self.source != None) and (len(all_choices)>1):
             for key in all_choices:
                 if all_choices[key] == self.source:
                     ac.pop(key)
@@ -42,9 +42,14 @@ class Car:
         ch = self.dest_choices()
         chlist = [x for x in ch]
        #print('chlist', chlist)
-        x = np.random.randint(len(chlist))
        #print('x', x)
-        self.destination = self.location.connections[chlist[x]]
+        try:
+            x = np.random.randint(len(chlist))
+            self.destination = self.location.connections[chlist[x]]
+        except:
+            print('Error in choose_dest')
+            print('chlist', chlist)
+           #print('x', x)
 
     def chosen_action(self):
         return np.random.randint(4)
@@ -69,8 +74,8 @@ class Car:
         # All this only applies on streets
         self.priority = ownprior
         if self.location.type == "street":
-            fwfw = self.container.forward and (self.destination == self.location.connections[1])
-            bwbw = not(self.container.forward) and (self.destination == self.location.connections[0])
+            fwfw = self.container.forward and (self.destination == self.location.connections[2])
+            bwbw = not(self.container.forward) and (self.destination == self.location.connections[1])
             if fwfw or bwbw:
                 self.priority = ownprior
                 info = sum([10**x for x in self.cars]) + 2*10**ownprior
