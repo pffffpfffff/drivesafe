@@ -1,9 +1,11 @@
-class dummy:
-    def __init__(self,a):
-        self.a = a
+import tensorflow as tf
+import numpy as np
 
-l = [dummy(x) for x in range(10)]
-print([x.a for x in l])
-del l[3]
-print([x.a for x in l])
+state = np.array([int(x) for x in format(42301,'05')])
+print(state)
+state = tf.convert_to_tensor(state[None,:], dtype = tf.float32)
+print(state)
 
+for i in range(10):
+    act = np.random.randint(0,4)
+    print(act)

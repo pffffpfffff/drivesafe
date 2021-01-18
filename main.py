@@ -7,7 +7,6 @@ from car import *
 from crash import *
 from settings import *
 from city import *
-from RL import *
 
 class game():
     def __init__(self):
@@ -22,14 +21,18 @@ class game():
         self.cars = []
         self.crashes = []
         self.shot = 0
-        self.learner = QLearner()
-        if loadlearner:
-            self.learner = self.learner.load()
-            if train:
-                self.learner.set_greedy(qgreed)
-            else:
-                print('no training')
-                self.learner.set_greedy(1)
+        self.action_space = [0,1,2,3]
+        self.n_actions = len(self.action_space)
+        self.n_features = 8
+       # self.learner = RL
+ #       self.learner = QLearner()
+ #       if loadlearner:
+#            self.learner = self.learner.load()
+#            if train:
+#                self.learner.set_greedy(qgreed)
+#            else:
+#                print('no training')
+#                self.learner.set_greedy(1)
         """
         0: create crossings
         1: create streets
@@ -138,7 +141,7 @@ class game():
 
         # make decisions for cars
         for car in self.cars:
-            car.action = self.learner.choose_action(car.state)
+            car.action = RL.choose_action(car.state)
             car.update(act=car.action)
 #           car.update()
 
@@ -181,7 +184,7 @@ class game():
             for car in self.cars:
                 # pass feedback to learner
                 car.new_state = car.info()
-                self.learner.learn(car.state, car.action ,car.feedback,car.new_state) 
+               # self.learner.learn(car.state, car.action ,car.feedback,car.new_state) 
                 car.state = car.new_state
 
         self.cars = cars_
@@ -189,16 +192,61 @@ class game():
             car.state = car.info()
         
               
+#    def run(self):
+#        while True:
+#            self.handle_events()
+#            if self.mode==0:
+#                self.run01()
+#            elif self.mode==1:
+#                self.run01()
+#            elif self.mode==2:
+#                self.run2()
+
+
     def run(self):
-        while True:
-            self.handle_events()
-            if self.mode==0:
-                self.run01()
-            elif self.mode==1:
-                self.run01()
-            elif self.mode==2:
-                self.run2()
+        step = 0
+        for episode in range(300):
+   #         # initial observation
+#            observation = env.reset()
+    
+            while True:
+                # fresh env
+                if self.mode ==0:
+                    self.run01()
+                elif self.mode ==1:
+                    self.run01()
+                elif self.mode ==2: 
+                    self.run2()
+                    
+       # RL choose action based on observation
+       #         action = RL.choose_action(observation)
+                # RL take action and get next observation and reward
+                for car in self.cars:
+                    observation,observation_, reward, done=np.array([float(x) for x in
+format(car.state, '08')]),[float(x) for x in format(car.info(),'08')],car.feedback, False
+                    print(observation,"end")
+                    action = RL.choose_action(observation)
+                    RL.store_transition(observation, action, reward, observation_)
+                if (step > 200) and (step % 5 == 0):
+                    RL.learn()
+                # swap observation
+                observation = observation_
+                # break while loop when end of this episode
+                if done:
+                    break
+                step += 1
+        # end of game
+  #      print('game over')
+  #      env.destroy()
 
 
-
-game().run()
+if __name__ == "__main__":
+    # maze game
+    env = game()
+    eval_model = Eval_Model(num_actions=env.n_actions)
+    target_model = Target_Model(num_actions=env.n_actions)
+    RL = DeepQNetwork(env.n_actions, env.n_features, eval_model, target_model)
+    env.run()
+  #  env.mainloop()
+    RL.plot_cost()
+#game().run()
