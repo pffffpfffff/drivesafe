@@ -139,9 +139,12 @@ game().run(method = 'dqn',max_episode = 10000)
 #b = drb['arr_0']
 #c = drc['arr_0']
 #plt.figure()
-#plt.plot(a,'r')
-#plt.plot(b,'b')
-#plt.plot(c,'g')
-#plt.savefig('performence.png',dpi=1200)
+#plt.plot(a,'r',label = 'random decisions')
+#plt.plot(b,'b',label = 'Q Learning')
+#plt.plot(c,'g',label = 'DQN')
+#plt.xlabel("steps")
+#plt.ylabel("number of crashes")
+#plt.legend()
+#plt.savefig('performance.png',dpi=1200)
 
 
