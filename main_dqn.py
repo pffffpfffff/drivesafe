@@ -147,10 +147,6 @@ class game():
         """ 
 
         # make decisions for cars
-  #      for car in self.cars:
- #           car.action = self.learner.choose_action(car.state)
-#            car.update(act=car.action)
-#           car.update()
         for car in self.cars:
             car.state = np.array([int(x) for x in format(car.state,'05')])
             car.action = self.agent.choose_action(car.state)
@@ -203,39 +199,8 @@ class game():
  
        
     def run(self,max_episode=2000):
-        loss_values = []
-        for i in range(200):
+        for i in range(max_episode):
              self.run2()
-             print("lr:",self.agent.learning_rate)
-#        for episode in range(max_episode):
-#             self.agent.learning_rate = 0.0001
-#             self.run2()          
-#             experience_batch = self.buffer.sample()
-##             print(experience_batch)
-##             print("lr:",self.agent.learning_rate)
-#             loss = self.agent.train(experience_batch)
-#         
-#             
-#             if episode % 20 == 0:
-#                 self.agent.update_target_net()
-#              #   print(self.crashcounter)
-#                 loss_values.append(loss)
-        plt.plot(np.array(loss_values),'r')
-        plt.show()
-#        tf.saved_model.save(self.agent.net,'/tmp/nqnet')
-#        tf.saved_model.save(self.agent.target_net,'/tmp/ntarget_net')       
-             
-#    def run(self):
-#        while True:
-#            self.handle_events()
-#            if self.mode==0:
-#                self.run01()
-#            elif self.mode==1:
-#                self.run01()
-#            elif self.mode==2:
-#                self.run2()
-
-
 
 game().run()
 

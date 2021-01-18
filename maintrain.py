@@ -68,6 +68,7 @@ class game():
         for i in range(10000):
             self.run2()
         self.learner.save()
+        print('crashes:',self.crashcounter)
         print(self.learner.q_table.to_string())
         print(self.learner.q_table.shape)
 
