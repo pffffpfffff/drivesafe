@@ -1,12 +1,11 @@
 import pygame
 from pygame.locals import *
 import numpy as np
-from crossing import *
-from streets import *
-from car import *
-from crash import *
-from settings import *
-from city import *
+from env.streets import *
+from env.car import *
+from env.crash import *
+from env.settings import *
+from env.city import *
 from RL import *
 from DQNagent import *
 from ReplayBuffer import *
@@ -36,8 +35,8 @@ class game():
                 self.agent.greedy = qgreed
             else:
                 print('no training')
-                self.learner.set_greedy(0)
-                self.agent.greedy = 0
+                self.learner.set_greedy(1)
+                self.agent.greedy = 1
         """
         0: create crossings
         1: create streets
@@ -274,4 +273,4 @@ class game():
            
 
 
-game().run(method='QL')
+game().run(method='DQN') # Available methods: 'QL' and 'DQN'

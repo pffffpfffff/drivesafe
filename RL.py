@@ -1,7 +1,7 @@
 import numpy as np
 import pickle
 import pandas as pd
-from settings import *
+from env.settings import *
 
 class QLearner:
     def __init__(self,acts=[0,1,2,3],learning_rate=0.1,discount=0.9,greedy = qgreed):
