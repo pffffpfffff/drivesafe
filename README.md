@@ -15,3 +15,5 @@ Animation is turned off in the files *maintrain.py* and *maintrain_dqn.py* for t
 For an animation of the traffic of well-behaved cars, change *Train* option in */env/setting.py* to **False** andrun the *main.py* file.
 
 We have run the untrained model(with random actions as output), trained Q Learning model, and trained DQN model 10.000 times each. The total number of crashes is recorded every 20 steps. We plot the total number of crashes for the three models in the image below, here the red line shows the perfomance of the untrained model, blue line the Q Learning Model, and green line the DQN model.
+
+![Performance](performance.png)
