@@ -27,3 +27,5 @@ We have generated three videos in the *videos/* folder the with our code, the vi
 We have run the untrained model(with random actions as output), trained Q Learning model, and trained DQN model 10.000 times each. The total number of crashes is recorded every 20 steps. We plot the total number of crashes for the three models in the image below, here the red line shows the perfomance of the untrained model, blue line the Q Learning Model, and green line the DQN model.
 
 ![Performance](performance.png)
+#License
+Distributed under the GPL-3.0 License. See 'LICENSE.md' for more information.
