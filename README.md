@@ -29,4 +29,4 @@ We have run the untrained model(with random actions as output), trained Q Learni
 ![Performance](images/performance.png)
 
 # License
-Distributed under the GPL-3.0 License. See 'LICENSE.md' for more information.
+Distributed under the GPL-3.0 License. See `LICENSE` for more information.
