@@ -7,11 +7,11 @@ Cars learn to obey trafic rules in a simplistic environment using Reinforcement 
 * Fabian Bernards (fabian.bernards@online.de)
 # About the game
 We use [Pygame](https://www.pygame.org/) to build our game environment. As the image below shows, the city consists of several crossings and streets connect the crossings. Each street has one right lane and one left lane. The cars are represented by colorful points on the map.
-![Normal traffic](city.png)
+![Normal traffic](images/city.png)
 
  When crashes happen, the cars in the accident would explode.
  
-![Crash](crash.png)
+![Crash](images/crash.png)
 
 # About the methods
 We have used two methods to train the model. 
@@ -26,6 +26,7 @@ We have generated three videos in the *videos/* folder the with our code, the vi
 
 We have run the untrained model(with random actions as output), trained Q Learning model, and trained DQN model 10.000 times each. The total number of crashes is recorded every 20 steps. We plot the total number of crashes for the three models in the image below, here the red line shows the perfomance of the untrained model, blue line the Q Learning Model, and green line the DQN model.
 
-![Performance](performance.png)
-#License
+![Performance](images/performance.png)
+
+# License
 Distributed under the GPL-3.0 License. See 'LICENSE.md' for more information.
